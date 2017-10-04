@@ -1,10 +1,12 @@
 <?php
 $debug = true;
 
+# Author: Jonathan Smith, Paul Ippolito, David Cyganowski
+
 # Shows the records in prints
 function show_records($dbc) {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT name, price FROM prints ORDER BY price ASC' ;
+	$query = 'SELECT num, fname, lname FROM presidents ORDER BY num DESC' ;
 
 	# Execute the query
 	$results = mysqli_query( $dbc , $query ) ;
@@ -15,19 +17,21 @@ function show_records($dbc) {
 	{
   		# But...wait until we know the query succeed before
   		# rendering the table start.
-  		echo '<H1>Prints</H1>' ;
+  		echo '<H1>Presidents</H1>';
   		echo '<TABLE>';
   		echo '<TR>';
-  		echo '<TH>Name</TH>';
-  		echo '<TH>Price</TH>';
+  		echo '<TH>Number</TH>';
+        echo '<TH>First Name</TH>';
+  		echo '<TH>Last Name</TH>';
   		echo '</TR>';
 
   		# For each row result, generate a table row
   		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
   		{
     		echo '<TR>' ;
-    		echo '<TD>' . $row['name'] . '</TD>' ;
-    		echo '<TD>' . $row['price'] . '</TD>' ;
+    		echo '<TD>' . $row['num'] . '</TD>' ;
+    		echo '<TD>' . $row['fname'] . '</TD>' ;
+            echo '<TD>' . $row['lname'] . '</TD>' ;
     		echo '</TR>' ;
   		}
 
@@ -40,8 +44,8 @@ function show_records($dbc) {
 }
 
 # Inserts a record into the prints table
-function insert_record($dbc, $name, $price) {
-  $query = 'INSERT INTO prints(name, price) VALUES ("' . $name . '" , ' . $price . ' )' ;
+function insert_record($dbc, $num, $fname, $lname) {
+  $query = 'INSERT INTO presidents(num, fname, lname, dob) VALUES ("' . $num . '", "' . $fname . '", "' . $lname . '", "' . '2001-11-16 00:00:00")' ;
   show_query($query);
 
   $results = mysqli_query($dbc,$query) ;
