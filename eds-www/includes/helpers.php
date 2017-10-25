@@ -1,7 +1,8 @@
 <?php
 $debug = true;
 # Author: Jonathan Smith, Paul Ippolito, David Cyganowski
-# Shows the records in prints
+
+# Shows the records in the presidents table
 function show_records($dbc) {
 	# Create a query to get the name and price sorted by price
 	$query = 'SELECT num, fname, lname FROM presidents ORDER BY num DESC' ;
@@ -35,7 +36,7 @@ function show_records($dbc) {
   		mysqli_free_result( $results ) ;
 	}
 }
-# Inserts a record into the prints table
+# Inserts a record into the presidents table
 function insert_record($dbc, $num, $fname, $lname) {
   $query = 'INSERT INTO presidents(num, fname, lname, dob) VALUES ("' . $num . '", "' . $fname . '", "' . $lname . '", "' . '2001-11-16 00:00:00")' ;
   show_query($query);
@@ -56,15 +57,14 @@ function check_results($results) {
     echo '<p>SQL ERROR = ' . mysqli_error( $dbc ) . '</p>'  ;
 }
 
-
+# Validates a given name
 function valid_name ($name) {
     if(empty($name))
        return false;
     return true;
 }
 
-
-
+# Validates a given number
 function valid_number ($num) {
     if(empty($num) || !is_numeric($num))
         return false;
@@ -74,10 +74,6 @@ function valid_number ($num) {
         return false;
     }
     return true;
-    
-
 }
-
-
 
 ?>
