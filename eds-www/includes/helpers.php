@@ -25,11 +25,78 @@ function show_records($dbc) {
   		# For each row result, generate a table row
   		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
   		{
-    			echo '<TR>' ;
-    			echo '<TD>' . $row['num'] . '</TD>' ;
-    			echo '<TD>' . $row['fname'] . '</TD>' ;
+            echo '<TR>' ;
+            echo '<TD>' . $row['num'] . '</TD>' ;
+            echo '<TD>' . $row['fname'] . '</TD>' ;
 			echo '<TD>' . $row['lname'] . '</TD>' ;
-    			echo '</TR>' ;
+            echo '</TR>' ;
+  		}
+  		# End the table
+  		echo '</TABLE>';
+  		# Free up the results in memory
+  		mysqli_free_result( $results ) ;
+	}
+}
+function show_link_records($dbc) {
+	# Create a query to get the name and price sorted by price
+	$query = 'SELECT num, lname FROM presidents ORDER BY num DESC' ;
+	# Execute the query
+	$results = mysqli_query( $dbc , $query );
+	check_results($results);
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+  		echo '<H1>Presidents</H1>';
+  		echo '<TABLE>';
+  		echo '<TR>';
+  		echo '<TH>Number</TH>';
+  		echo '<TH>Last Name</TH>';
+  		echo '</TR>';
+		
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
+  		{
+            echo '<TR>';
+            $alink = '<A HREF=linkypresidents.php?num=' . $row['num']  . '>' . $row['num'] . '</A>';
+            echo '<TD>' . $alink . '</TD>';
+            echo '<TD>' . $row['lname'] . '</TD>';
+            echo '</TR>';
+  		}
+  		# End the table
+  		echo '</TABLE>';
+  		# Free up the results in memory
+  		mysqli_free_result( $results );
+	}
+}
+function show_record($dbc, $num) {
+	# Create a query to get the name and price sorted by price
+	$query = 'SELECT num, fname, lname FROM presidents WHERE num = ' . $num;
+	# Execute the query
+	$results = mysqli_query( $dbc , $query );
+	check_results($results);
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+  		echo '<H1>Presidents</H1>';
+  		echo '<TABLE>';
+  		echo '<TR>';
+  		echo '<TH>Number</TH>';
+		echo '<TH>First Name</TH>';
+  		echo '<TH>Last Name</TH>';
+  		echo '</TR>';
+		
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
+  		{
+            echo '<TR>' ;
+            echo '<TD>' . $row['num'] . '</TD>' ;
+            echo '<TD>' . $row['fname'] . '</TD>' ;
+			echo '<TD>' . $row['lname'] . '</TD>' ;
+            echo '</TR>' ;
   		}
   		# End the table
   		echo '</TABLE>';
