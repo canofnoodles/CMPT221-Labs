@@ -6,7 +6,7 @@
 require( 'includes/connect_db.php' ) ;
 
 # Connect to MySQL server and the database
-require( 'includes/limbo_login_tools.php' ) ;
+require( 'includes/helpers.php' ) ;
     
 if(empty($_SESSION['user']))
 {

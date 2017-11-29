@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS stuff
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     location_id INT NOT NULL,
-    FOREIGN KEY (location_id) REFERENCES locations(id),
     descript TEXT NOT NULL,
     create_date DATETIME NOT NULL,
     update_date DATETIME NOT NULL,

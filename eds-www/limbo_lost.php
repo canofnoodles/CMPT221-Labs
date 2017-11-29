@@ -2,14 +2,14 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Style-Type" content="text/css" /> 
-		<title>linkylost.php</title>
+		<title>Lost Items</title>
 		<link href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
 		<link href="/library/skin/morpheus-default/tool.css" type="text/css" rel="stylesheet" media="all" />
 		<script type="text/javascript" src="/library/js/headscripts.js"></script>
 		<style>body { padding: 5px !important; }</style>
 	</head>
 	<body>
-        <h1>Lost Items</h1>
+        <h1>LIMBO</h1>
     <p><a href="limbo.php">Home</a>  <a href="limbo_lost.php">Lost Items</a>  <a href="limbo_found.php">Found Items</a>  <a href="limbo_login.php">Admin's Page</a></p>
 <!--
 Author: Jonathan Smith, Paul Ippolito, David Cyganowski
@@ -41,11 +41,6 @@ It demonstrates how to ...
 			else
 				foreach($errors as $msg)
 					echo $msg;
-		}
-		else if($_SERVER[ 'REQUEST_METHOD' ] == 'GET')
-		{
-			if(isset($_GET['id']))
-				show_record($dbc, $_GET['id']) ;
 		}
 		
 		# Show the records
