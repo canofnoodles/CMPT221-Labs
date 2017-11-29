@@ -79,7 +79,7 @@ function show_link_records($dbc)
 function show_lost_link_records($dbc)
 {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "lost"' ;
+	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "lost" ORDER BY descript' ;
 	# Execute the query
 	$results = mysqli_query( $dbc , $query );
 	check_results($results);
@@ -89,7 +89,7 @@ function show_lost_link_records($dbc)
   		# But...wait until we know the query succeed before
   		# rendering the table start.
   		echo '<H1>Lost Stuff</H1>';
-  		echo '<TABLE>';
+  		echo '<TABLE border=1>';
   		echo '<TR>';
   		echo '<TH>ID</TH>';
   		echo '<TH>Location</TH>';
@@ -117,7 +117,7 @@ function show_lost_link_records($dbc)
 function show_found_link_records($dbc)
 {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "found"' ;
+	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "found" ORDER BY descript' ;
 	# Execute the query
 	$results = mysqli_query( $dbc , $query );
 	check_results($results);
@@ -127,7 +127,7 @@ function show_found_link_records($dbc)
   		# But...wait until we know the query succeed before
   		# rendering the table start.
   		echo '<H1>Found Stuff</H1>';
-  		echo '<TABLE>';
+  		echo '<TABLE border=1>';
   		echo '<TR>';
   		echo '<TH>ID</TH>';
   		echo '<TH>Location</TH>';
@@ -178,7 +178,7 @@ function show_record($dbc, $id)
 function show_admin_records($dbc)
 {
     # Create a query to get the name and price sorted by price
-	$query = 'SELECT * FROM stuff' ;
+	$query = 'SELECT * FROM stuff ORDER BY id' ;
 	# Execute the query
 	$results = mysqli_query( $dbc , $query );
 	check_results($results);
@@ -235,6 +235,44 @@ function show_admin_records($dbc)
   		mysqli_free_result( $results );
 	}
 }
+function show_home_records($dbc)
+{
+	# Create a query to get the name and price sorted by price
+	$query = 'SELECT id, location_id, descript, status FROM stuff ORDER BY descript';
+	# Execute the query
+	$results = mysqli_query( $dbc , $query );
+	check_results($results);
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+  		echo '<H1>Limbo Stuff</H1>';
+  		echo '<TABLE border=1>';
+  		echo '<TR>';
+  		echo '<TH>ID</TH>';
+  		echo '<TH>Location</TH>';
+		echo '<TH>Description</TH>';
+		echo '<TH>Status</TH>';
+  		echo '</TR>';
+        
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
+  		{
+			echo '<TR>';
+			$alink = '<a href="#" onClick="MyWindow=window.open(\'limbo_item_info.php?id=' . $row['id'] . '\',\'MyWindow\',width=600,height=300); return false;">' . $row['id'] . '</a>';
+			echo '<TD>' . $alink . '</TD>';
+			echo '<TD>' . locidToName($dbc, $row['location_id']) . '</TD>';
+			echo '<TD>' . $row['descript'] . '</TD>';
+			echo '<TD>' . $row['status'] . '</TD>';
+			echo '</TR>';
+  		}
+  		# End the table
+  		echo '</TABLE>';
+  		# Free up the results in memory
+  		mysqli_free_result( $results );
+	}
+}
 function locidToName($dbc, $id)
 {
     $query = 'SELECT name FROM locations WHERE id = ' . $id;
@@ -243,17 +281,17 @@ function locidToName($dbc, $id)
     $name = $rowloc['name'];
     return $name;
 }
-function insert_lost_record($dbc, $location_id, $name)
+function insert_lost_record($dbc, $location_id, $name, $room, $owner)
 {
-	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "lost")' ;
+	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status, room, owner) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "lost", "' . $room . '", "' . $owner . '")' ;
 	show_query($query);
 	$results = mysqli_query($dbc,$query);
 	check_results($results) ;
 	return $results ;
 }
-function insert_found_record($dbc, $location_id, $name)
+function insert_found_record($dbc, $location_id, $name, $room, $finder)
 {
-	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "found")' ;
+	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status, room, finder) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "found", "' . $room . '", "' . $finder . '")' ;
 	show_query($query);
 	$results = mysqli_query($dbc,$query);
 	check_results($results) ;

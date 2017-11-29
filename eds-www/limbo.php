@@ -26,52 +26,15 @@ It demonstrates how to ...
 		require( 'includes/connect_db.php' );
 		# Includes these helper functions
 		require( 'includes/helpers.php' );
-
-		if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST')
-		{
-			$num = $_POST['num'];
-			$fname = $_POST['fname'];
-			$lname = $_POST['lname'];
-			$errors = array();
-	
-			if(!valid_number($num))
-				$errors[] = '<p style="color:red;font-size:16px;"> Please give a valid number!</p>';
-			if (!valid_name ($fname))
-				$errors[] = '<p style="color:red;font-size:16px;"> Please give a valid first name!</p>';
-			if (!valid_name($lname))
-        			$errors[] = '<p style="color:red;font-size:16px;"> Please give a valid last name!</p>';
-			if(empty($errors))
-				insert_record($dbc, $num, $fname, $lname);
-			else
-				foreach($errors as $msg)
-					echo $msg;
-		}
-		else if($_SERVER[ 'REQUEST_METHOD' ] == 'GET')
-		{
-			if(isset($_GET['num']))
-				show_record($dbc, $_GET['num']) ;
-		}
 		
 		# Show the records
-		show_link_records($dbc);
+		show_home_records($dbc);
 		# Close the connection
 		mysqli_close( $dbc ) ;
 		?>
 		
 		<!-- Get inputs from the user. -->
-		<form action="linkypresidents.php" method="POST">
-			<table>
-				<tr>
-					<td>Number:</td><td><input type="text" name="num" value="<?php if (isset($_POST['num'])) echo $_POST['num']; ?>"></td>
-				</tr>
-				<tr>
-					<td>First Name:</td><td><input type="text" name="fname" value="<?php if (isset($_POST['fname'])) echo $_POST['fname']; ?>"></td>
-				</tr>
-				<tr>
-					<td>Last Name:</td><td><input type="text" name="lname" value="<?php if (isset($_POST['lname'])) echo $_POST['lname']; ?>"></td>
-				</tr>
-			</table>
-			<p><input type="submit" ></p>
+		<form action="limbo.php" method="POST">
 		</form>
 	</body>
 </html>

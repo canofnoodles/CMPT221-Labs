@@ -30,14 +30,20 @@ It demonstrates how to ...
 		{
 			$location_id = $_POST['location_id'];
 			$descript = $_POST['descript'];
+            $room = $_POST['room'];
+            $person = $_POST['person'];
 			//$status = $_POST['status'];
 			$errors = array();
 			
 			if (!valid_name ($descript))
 				$errors[] = '<p style="color:red;font-size:16px;"> Please give a valid description!</p>';
+            if (!valid_name ($room))
+                $errors[] = '<p style="color:red;font-size:16px;"> Please give a valid room!</p>';
+            if (!valid_name ($person))
+                $errors[] = '<p style="color:red;font-size:16px;"> Please give a valid name!</p>';
 			
 			if(empty($errors))
-				insert_lost_record($dbc, $location_id, $descript);
+				insert_lost_record($dbc, $location_id, $descript, $room, $person);
 			else
 				foreach($errors as $msg)
 					echo $msg;
@@ -72,6 +78,12 @@ It demonstrates how to ...
 				<tr>
 					<td>Description:</td><td><input type="text" name="descript" value="<?php if (isset($_POST['descript'])) echo $_POST['descript']; ?>"></td>
 				</tr>
+                <tr>
+                    <td>Room:</td><td><input type="text" name="room" value="<?php if (isset($_POST['room'])) echo $_POST['room']; ?>"></td>
+                </tr>
+                <tr>
+                    <td>Your name:</td><td><input type="text" name="person" value="<?php if (isset($_POST['person'])) echo $_POST['person']; ?>"></td>
+                </tr>
 			</table>
 			<p><input type="submit" ></p>
 		</form>
