@@ -3,6 +3,7 @@
 # Version 0.1
 
 # creates the limbo database if it does not already exist
+DROP DATABASE IF EXISTS limbo_db;
 CREATE DATABASE IF NOT EXISTS limbo_db;
 USE limbo_db;
 
@@ -10,8 +11,7 @@ USE limbo_db;
 DROP TABLE users;
 CREATE TABLE IF NOT EXISTS users (
     user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(20) NOT NULL,
-    last_name VARCHAR(20) NOT NULL,
+    username VARCHAR(20) NOT NULL,
     email VARCHAR(20) NOT NULL,
     pass CHAR(40) NOT NULL,
     reg_date DATETIME NOT NULL,
@@ -20,22 +20,11 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 # populates users table with one user, admin, with password gaze11e
-INSERT INTO users (first_name, last_name, email, pass, reg_date)
-VALUES ("admin", "minad", "admin@iownthis.org", "gaze11e", NOW());
+INSERT INTO users (username, email, pass, reg_date)
+VALUES ("adminboy42", "admin@iownthis.org", "gaze11e", NOW());
 
 # creates stuff table. contains stuff that is lost
 DROP TABLE stuff;
-CREATE TABLE IF NOT EXISTS stuff (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    location_id INT NOT NULL,
-    descript TEXT NOT NULL,
-    create_date DATETIME NOT NULL,
-    update_date DATETIME NOT NULL,
-    room TEXT,
-    owner TEXT,
-    finder TEXT,
-    status SET ("found", "lost", "claimed") NOT NULL
-);
 
 # creates locations table. contains all possible locations of lost items
 DROP TABLE locations;
@@ -44,6 +33,20 @@ CREATE TABLE IF NOT EXISTS locations (
     create_date DATETIME NOT NULL,
     update_date DATETIME NOT NULL,
     name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS stuff
+(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    location_id INT NOT NULL,
+    FOREIGN KEY (location_id) REFERENCES locations(id),
+    descript TEXT NOT NULL,
+    create_date DATETIME NOT NULL,
+    update_date DATETIME NOT NULL,
+    room TEXT,
+    owner TEXT,
+    finder TEXT,
+    status SET ("found", "lost", "claimed") NOT NULL
 );
 
 # Populates locations table with all the locations around the Marist campus

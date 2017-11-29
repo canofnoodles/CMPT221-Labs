@@ -5,7 +5,7 @@ $debug = true;
 function show_records($dbc)
 {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT num, fname, lname FROM presidents ORDER BY num DESC' ;
+	$query = 'SELECT id, location_id, descript, status FROM stuff' ;
 	# Execute the query
 	$results = mysqli_query( $dbc , $query ) ;
 	check_results($results) ;
@@ -14,21 +14,22 @@ function show_records($dbc)
 	{
   		# But...wait until we know the query succeed before
   		# rendering the table start.
-  		echo '<H1>Presidents</H1>';
+  		echo '<H1>Lost Stuff</H1>';
   		echo '<TABLE>';
   		echo '<TR>';
-  		echo '<TH>Number</TH>';
-		echo '<TH>First Name</TH>';
-  		echo '<TH>Last Name</TH>';
+  		echo '<TH>ID</TH>';
+		echo '<TH>Location</TH>';
+  		echo '<TH>Description</TH>';
   		echo '</TR>';
 		
   		# For each row result, generate a table row
   		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
   		{
 			echo '<TR>' ;
-			echo '<TD>' . $row['num'] . '</TD>' ;
-			echo '<TD>' . $row['fname'] . '</TD>' ;
-			echo '<TD>' . $row['lname'] . '</TD>' ;
+			echo '<TD>' . $row['id'] . '</TD>' ;
+			echo '<TD>' . $row['location_id'] . '</TD>' ;
+			echo '<TD>' . $row['descript'] . '</TD>' ;
+			echo '<TD>' . $row['status'] . '</TD>' ;
 			echo '</TR>' ;
   		}
   		# End the table
@@ -40,7 +41,7 @@ function show_records($dbc)
 function show_link_records($dbc)
 {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT num, lname FROM presidents ORDER BY num DESC' ;
+	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "lost"' ;
 	# Execute the query
 	$results = mysqli_query( $dbc , $query );
 	check_results($results);
@@ -49,20 +50,106 @@ function show_link_records($dbc)
 	{
   		# But...wait until we know the query succeed before
   		# rendering the table start.
-  		echo '<H1>Presidents</H1>';
+  		echo '<H1>Lost Stuff</H1>';
   		echo '<TABLE>';
   		echo '<TR>';
-  		echo '<TH>Number</TH>';
-  		echo '<TH>Last Name</TH>';
+  		echo '<TH>ID</TH>';
+  		echo '<TH>Location ID</TH>';
+		echo '<TH>Description</TH>';
+		echo '<TH>Status</TH>';
   		echo '</TR>';
 		
   		# For each row result, generate a table row
   		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
   		{
 			echo '<TR>';
-			$alink = '<A HREF=linkypresidents.php?num=' . $row['num']  . '>' . $row['num'] . '</A>';
+			$alink = '<A HREF=limbo_lost.php?num=' . $row['id']  . '>' . $row['id'] . '</A>';
 			echo '<TD>' . $alink . '</TD>';
-			echo '<TD>' . $row['lname'] . '</TD>';
+			echo '<TD>' . $row['location_id'] . '</TD>';
+			echo '<TD>' . $row['descript'] . '</TD>';
+			echo '<TD>' . $row['status'] . '</TD>';
+			echo '</TR>';
+  		}
+  		# End the table
+  		echo '</TABLE>';
+  		# Free up the results in memory
+  		mysqli_free_result( $results );
+	}
+}
+function show_lost_link_records($dbc)
+{
+	# Create a query to get the name and price sorted by price
+	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "lost"' ;
+	# Execute the query
+	$results = mysqli_query( $dbc , $query );
+	check_results($results);
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+  		echo '<H1>Lost Stuff</H1>';
+  		echo '<TABLE>';
+  		echo '<TR>';
+  		echo '<TH>ID</TH>';
+  		echo '<TH>Location</TH>';
+		echo '<TH>Description</TH>';
+		echo '<TH>Status</TH>';
+  		echo '</TR>';
+        
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
+  		{
+			echo '<TR>';
+			$alink = '<A HREF=limbo_lost.php?num=' . $row['id']  . '>' . $row['id'] . '</A>';
+			echo '<TD>' . $alink . '</TD>';
+            $query = 'SELECT name FROM locations WHERE id = ' . $row['location_id'];
+            $resultloc = mysqli_query( $dbc , $query );
+            $rowloc = mysqli_fetch_array( $resultloc , MYSQLI_ASSOC );
+			echo '<TD>' . $rowloc['name'] . '</TD>';
+			echo '<TD>' . $row['descript'] . '</TD>';
+			echo '<TD>' . $row['status'] . '</TD>';
+			echo '</TR>';
+  		}
+  		# End the table
+  		echo '</TABLE>';
+  		# Free up the results in memory
+  		mysqli_free_result( $results );
+	}
+}
+function show_found_link_records($dbc)
+{
+	# Create a query to get the name and price sorted by price
+	$query = 'SELECT id, location_id, descript, status FROM stuff WHERE status = "found"' ;
+	# Execute the query
+	$results = mysqli_query( $dbc , $query );
+	check_results($results);
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+  		echo '<H1>Found Stuff</H1>';
+  		echo '<TABLE>';
+  		echo '<TR>';
+  		echo '<TH>ID</TH>';
+  		echo '<TH>Location</TH>';
+		echo '<TH>Description</TH>';
+		echo '<TH>Status</TH>';
+  		echo '</TR>';
+        
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ) )
+  		{
+			echo '<TR>';
+			$alink = '<A HREF=limbo_lost.php?num=' . $row['id']  . '>' . $row['id'] . '</A>';
+			echo '<TD>' . $alink . '</TD>';
+            $query = 'SELECT name FROM locations WHERE id = ' . $row['location_id'];
+            $resultloc = mysqli_query( $dbc , $query );
+            $rowloc = mysqli_fetch_array( $resultloc , MYSQLI_ASSOC );
+			echo '<TD>' . $rowloc['name'] . '</TD>';
+			echo '<TD>' . $row['descript'] . '</TD>';
+			echo '<TD>' . $row['status'] . '</TD>';
 			echo '</TR>';
   		}
   		# End the table
@@ -74,7 +161,7 @@ function show_link_records($dbc)
 function show_record($dbc, $num)
 {
 	# Create a query to get the name and price sorted by price
-	$query = 'SELECT num, fname, lname FROM presidents WHERE num = ' . $num;
+	$query = 'SELECT id, location_id, descript, status FROM stuff';
 	# Execute the query
 	$results = mysqli_query( $dbc , $query );
 	check_results($results);
@@ -83,12 +170,12 @@ function show_record($dbc, $num)
 	{
   		# But...wait until we know the query succeed before
   		# rendering the table start.
-  		echo '<H1>Presidents</H1>';
+  		echo '<H1>Lost Stuff</H1>';
   		echo '<TABLE>';
   		echo '<TR>';
-  		echo '<TH>Number</TH>';
-		echo '<TH>First Name</TH>';
-  		echo '<TH>Last Name</TH>';
+  		echo '<TH>ID</TH>';
+		echo '<TH>Location ID</TH>';
+  		echo '<TH>Description</TH>';
   		echo '</TR>';
 		
   		# For each row result, generate a table row
@@ -98,6 +185,8 @@ function show_record($dbc, $num)
 			echo '<TD>' . $row['num'] . '</TD>' ;
 			echo '<TD>' . $row['fname'] . '</TD>' ;
 			echo '<TD>' . $row['lname'] . '</TD>' ;
+			echo '<TD>' . $row['descript'] . '<TD>';
+			
 			echo '</TR>' ;
   		}
   		# End the table
@@ -106,12 +195,19 @@ function show_record($dbc, $num)
   		mysqli_free_result( $results ) ;
 	}
 }
-# Inserts a record into the presidents table
-function insert_record($dbc, $num, $fname, $lname)
+function insert_lost_record($dbc, $location_id, $name)
 {
-	$query = 'INSERT INTO presidents(num, fname, lname, dob) VALUES ("' . $num . '", "' . $fname . '", "' . $lname . '", "' . '2001-11-16 00:00:00")' ;
+	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "lost")' ;
 	show_query($query);
-	$results = mysqli_query($dbc,$query) ;
+	$results = mysqli_query($dbc,$query);
+	check_results($results) ;
+	return $results ;
+}
+function insert_found_record($dbc, $location_id, $name)
+{
+	$query = 'INSERT INTO stuff(location_id, descript, create_date, update_date, status) VALUES ("' . $location_id . '", "' . $name . '", NOW(), NOW(), "found")' ;
+	show_query($query);
+	$results = mysqli_query($dbc,$query);
 	check_results($results) ;
 	return $results ;
 }
@@ -147,6 +243,12 @@ function valid_number ($num)
 		if($num <= 0)
 			return false;
 	}
+	return true;
+}
+function valid_date ($fdate)
+{
+	if(empty($fdate))
+		return false;
 	return true;
 }
 ?>
